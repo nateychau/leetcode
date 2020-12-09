@@ -54,8 +54,9 @@ var numIslands = function(grid) {
   let y = grid[0].length; //height of matrix
   let count = 0; //counter to keep track of islands
   
-  for(let i = 0; i < x; i++){ //double for loop to scan matrix
-      for(let j = 0; j < y; j++){
+  //double for loop to scan matrix
+  for(let i = 0; i < x; i++){ //i to iterate over cols
+      for(let j = 0; j < y; j++){ //j to iterate over rows
           if(grid[i][j] === '1'){ //when  you encounter land, recursively check adjacent squares
               dfs(grid, i, j);
               count++; //increment count to show that this is all 1 island visited
@@ -75,9 +76,20 @@ var dfs = function(grid, i, j){
   //otherwise mark it is visited by changing it to water
   grid[i][j] = '0';
 
-  //then continue searching adjacent squares
-  dfs(grid, i+1, j);
-  dfs(grid, i, j+1);
-  dfs(grid, i-1, j);
-  dfs(grid, i, j-1);
+  //then continue visiting adjacent squares
+  dfs(grid, i+1, j); //recursively visit all squares above
+  dfs(grid, i, j+1); //recursively visit all squares to the right
+  dfs(grid, i-1, j); //recursively visit all squares below
+  dfs(grid, i, j-1); //recursively visit all squares to left
 }
+
+/*
+Time complexity: O(n*m) where n is the number of rows, m is the number of columns; 
+Each cell can be visited at most 5 times: 
+  1. visited in the double for loop
+  2-4. visited as one of the 4 neighbors of a land square
+
+Each square C can only be visited as one of the 4 neighbors (N,E,S,W) one time, 
+since the origin square O is changed to water after being visited. Therefore, even if we land
+on O again, we will not get from O to C, because we will return immediately upon landing on O. 
+*/
